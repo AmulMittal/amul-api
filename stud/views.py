@@ -19,6 +19,8 @@ from rest_framework.views import APIView
 from rest_framework import authentication, permissions
 from django.contrib.auth.models import User
 
+from stud import serializers
+
 
 @api_view(['GET','POST'])
 
@@ -32,8 +34,22 @@ def student(request):
         s.save()
         return Response({"message : Successfull added"})
     
-
-
+@api_view(['GET','POST'])
+def Registration(request):
+    if request.method == "POST":
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        
+    
+        if serializer.is_valid():
+            user = User.objects.create_user(username = request.data['username'],password = request.data['password'])
+            user.save()
+            # user = serializer.save()
+            
+            return Response({"message : success "})
+        return Response({"message : error "})
+            
        
 class CustomAuthToken(ObtainAuthToken):
     
@@ -41,6 +57,7 @@ class CustomAuthToken(ObtainAuthToken):
         serializer = self.serializer_class(data=request.data,context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
+        
        
         token, created = Token.objects.get_or_create(user=user)
         return Response({
