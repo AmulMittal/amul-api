@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v1!v#%*fbnm x1=g086=2kc52b9$(9b%i#e579gph0dpzgf_*^+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['amul-api.herokuapp.com','127.0.0.1']
 

@@ -21,14 +21,11 @@ from django.contrib.auth.models import User
 
 
 @api_view(['GET','POST'])
+
 def student(request):
     if request.method == 'GET':
         students = Student.objects.all()
-        print("------",students)
         serializer = StudentSerializer(students, many = True)
-        
-        print(serializer.data)
-        
         return Response(serializer.data)
     else:
         s = Student(name=request.data['name'], marks=request.data['marks'])
