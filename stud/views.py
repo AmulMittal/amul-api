@@ -27,14 +27,13 @@ from stud import serializers
 @permission_classes([IsAuthenticated,])
 def student(request):
     if request.method == 'GET':
-        
-        students = Student.objects.all()
-        
+        user = User.objects.get(id = request.user.id)
+        students = Student.objects.all().filter(user = user)
         serializer = StudentSerializer(students, many = True)
         return Response(serializer.data)
     else:
-        
-        s = Student(name=request.data['name'], marks=request.data['marks'])
+        user = User.objects.filter(id = request.user.id)
+        s = Student(user = user[0],name=request.data['name'], marks=request.data['marks'])
         s.save()
         return Response({"message : Successfull added"})
     
