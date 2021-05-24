@@ -23,24 +23,28 @@ from stud import serializers
 
 
 @api_view(['GET','POST'])
-
+@authentication_classes([TokenAuthentication,])
+@permission_classes([IsAuthenticated,])
 def student(request):
     if request.method == 'GET':
+        
         students = Student.objects.all()
+        
         serializer = StudentSerializer(students, many = True)
         return Response(serializer.data)
     else:
+        
         s = Student(name=request.data['name'], marks=request.data['marks'])
         s.save()
         return Response({"message : Successfull added"})
     
-@api_view(['GET','POST'])
+@api_view(['POST',])
 def Registration(request):
     if request.method == "POST":
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
-        
+        print(serializer.data)
     
         if serializer.is_valid():
             user = User.objects.create_user(username = request.data['username'],password = request.data['password'])
